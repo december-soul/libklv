@@ -1,4 +1,5 @@
 #include "libklv.h"
+#include <string.h>
 
 /*****************************************************************************
  * libklv_read
@@ -313,16 +314,16 @@ static int decode_klv_values(klv_item_t *item, klv_ctx_t *klv_ctx)
             switch (item->value)
             {
                 case 0:
-                    item->data = strdup("detector off", item->len);
+                    item->data = strndup("detector off", item->len);
                     break;
                 case 1:
-                    item->data = strdup("no icing detected", item->len);
+                    item->data = strndup("no icing detected", item->len);
                     break;
                 case 2:
-                    item->data = strdup("icing detected", item->len);
+                    item->data = strndup("icing detected", item->len);
                     break;
                 default:
-                    item->data = strdup("unsupported value", item->len);
+                    item->data = strndup("unsupported value", item->len);
             }
             break;
         case 0x23:  /* wind direction */
@@ -504,28 +505,28 @@ static int decode_klv_values(klv_item_t *item, klv_ctx_t *klv_ctx)
             switch (item->value)
             {
                 case 0:
-                    item->data = strdup("Ultranarrow", item->len);
+                    item->data = strndup("Ultranarrow", item->len);
                     break;
                 case 1:
-                    item->data = strdup("Narrow", item->len);
+                    item->data = strndup("Narrow", item->len);
                     break;
                 case 2:
-                    item->data = strdup("Medium", item->len);
+                    item->data = strndup("Medium", item->len);
                     break;
                 case 3:
-                    item->data = strdup("Wide", item->len);
+                    item->data = strndup("Wide", item->len);
                     break;
                 case 4:
-                    item->data = strdup("Ultrawide", item->len);
+                    item->data = strndup("Ultrawide", item->len);
                     break;
                 case 5:
-                    item->data = strdup("Narrow Medium", item->len);
+                    item->data = strndup("Narrow Medium", item->len);
                     break;
                 case 6:
-                    item->data = strdup("2x Ultranarrow", item->len);
+                    item->data = strndup("2x Ultranarrow", item->len);
                     break;
                 case 7:
-                    item->data = strdup("4x Ultranarrow", item->len);
+                    item->data = strndup("4x Ultranarrow", item->len);
                     break;
             }
             printf("  0x%02X (sensor fov name):\t%s", item->id, item->data);
@@ -600,22 +601,22 @@ static int decode_klv_values(klv_item_t *item, klv_ctx_t *klv_ctx)
             switch (item->value)
             {
                 case 0x00:
-                    item->data = strdup("Other", item->len);
+                    item->data = strndup("Other", item->len);
                     break;
                 case 0x01:
-                    item->data = strdup("Operational", item->len);
+                    item->data = strndup("Operational", item->len);
                     break;
                 case 0x02:
-                    item->data = strdup("Training", item->len);
+                    item->data = strndup("Training", item->len);
                     break;
                 case 0x03:
-                    item->data = strdup("Exercise", item->len);
+                    item->data = strndup("Exercise", item->len);
                     break;
                 case 0x04:
-                    item->data = strdup("Maintenance", item->len);
+                    item->data = strndup("Maintenance", item->len);
                     break;
                 case 0x05:
-                    item->data = strdup("Test", item->len);
+                    item->data = strndup("Test", item->len);
                     break;
             }
             printf("  0x%02X (operational mode):\t%s", item->id, item->data);
@@ -796,13 +797,11 @@ int libklv_update_ctx_buffer(klv_ctx_t *ctx, void *src, size_t len)
         free(ctx->buffer);
 
     ctx->buffer = malloc(len);
-
     memcpy(ctx->buffer, src, len);
 
     ctx->buffer_size = len;
     ctx->buf_end = ctx->buffer + ctx->buffer_size;
     ctx->buf_ptr = ctx->buffer;
-
     return 0;
 }
 
@@ -814,7 +813,6 @@ klv_ctx_t* libklv_init()
     klv_ctx_t *ctx = (klv_ctx_t *)malloc(sizeof(klv_ctx_t));    /* create context on heap */
 
     INIT_LIST_HEAD(&ctx->klv_items.list);      /* initialize the items list */
-
     return ctx;
 }
 
@@ -837,7 +835,6 @@ int libklv_parse_data(uint8_t *p_data, uint16_t pkt_len, klv_ctx_t *klv_ctx)
     klv_item_t *p_tmp_item = NULL;  /* temporary pointer for iterating through the klv items list */
     uint8_t bytes_read;
 
-
     /* we don't want multiple lists allocated, but we want the user to have access after a packet is parsed */
 	delete_klv_item_list(&klv_ctx->klv_items);
 
@@ -846,8 +843,8 @@ int libklv_parse_data(uint8_t *p_data, uint16_t pkt_len, klv_ctx_t *klv_ctx)
 
     /* sync klv context with the start of klv key within the metadata packet */
     if (sync_to_klv_key(NULL, 0, klv_ctx) < 0) {
-//        printf("[!] KLV key not found within stream %d\n", ts_pid);
-        return -1;
+        printf("[!] KLV key not found within stream %d\n", ts_pid);
+        //return -1;
     }
 
     printf("\n[+] pid %u (0x%04x), cc %d\n", ts_pid, ts_pid, ts_cc);
