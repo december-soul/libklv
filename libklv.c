@@ -137,11 +137,11 @@ static int decode_klv_values(klv_item_t *item, klv_ctx_t *klv_ctx)
             break;
         case 0x03:  /* mission id */
             item->data = libklv_strdup(klv_ctx, item->len);
-            printf("  0x%02X (mission id):\t%s", item->id, (char*)item->data);
+            printf("  0x%02X (mission id):\t%s\n", item->id, (char*)item->data);
             break;
         case 0x04:  /* platform tail number */
             item->data = libklv_strdup(klv_ctx, item->len);
-            printf("  0x%02X (tail number):\t%s", item->id, (char*)item->data);
+            printf("  0x%02X (tail number):\t%s\n", item->id, (char*)item->data);
             break;
         case 0x05:  /* platform heading angle */
             item->value = libklv_readUINT16(klv_ctx);
@@ -164,7 +164,7 @@ static int decode_klv_values(klv_item_t *item, klv_ctx_t *klv_ctx)
         case 0x08:  /* platform true airspeed */
             /* 0..255 */
             item->value = libklv_readUINT8(klv_ctx);
-            printf("  0x%02X (platform roll angle):\t%" PRIu8 "", item->id, (uint8_t)item->value);
+            printf("  0x%02X (platform roll angle):\t%" PRIu8 "\n", item->id, (uint8_t)item->value);
             break;
         case 0x09:  /* platform indicated airspeed */
             /* 0..255 */
@@ -353,7 +353,7 @@ static int decode_klv_values(klv_item_t *item, klv_ctx_t *klv_ctx)
             break;
         case 0x27:  /* outside air temperature */
             item->signed_val = libklv_readINT8(klv_ctx);
-            printf("  0x%02X (outside air temp):\t%" PRId8 "", item->id, (int8_t)item->signed_val);
+            printf("  0x%02X (outside air temp):\t%" PRId8 "\n", item->id, (int8_t)item->signed_val);
             break;
         case 0x28:  /* target location latitude */
             item->signed_val = libklv_readINT32(klv_ctx);
@@ -530,7 +530,7 @@ static int decode_klv_values(klv_item_t *item, klv_ctx_t *klv_ctx)
                     item->data = strndup("4x Ultranarrow", item->len);
                     break;
             }
-            printf("  0x%02X (sensor fov name):\t%s", item->id, (char*)item->data);
+            printf("  0x%02X (sensor fov name):\t%s\n", item->id, (char*)item->data);
             break;
         case 0x40:  /* platform magnetic heading angle */
             item->value = libklv_readUINT16(klv_ctx);
@@ -565,7 +565,7 @@ static int decode_klv_values(klv_item_t *item, klv_ctx_t *klv_ctx)
             break;
         case 0x46:  /* alternate platform name */
             item->data = libklv_strdup(klv_ctx, item->len);
-            printf("  0x%02X (alt pltfrm name):\t%s", item->id, (char*)item->data);
+            printf("  0x%02X (alt pltfrm name):\t%s\n", item->id, (char*)item->data);
             break;
         case 0x47:  /* alternate platform heading */
             item->value = libklv_readUINT16(klv_ctx);
@@ -620,7 +620,7 @@ static int decode_klv_values(klv_item_t *item, klv_ctx_t *klv_ctx)
                     item->data = strndup("Test", item->len);
                     break;
             }
-            printf("  0x%02X (operational mode):\t%s", item->id, (char*)item->data);
+            printf("  0x%02X (operational mode):\t%s\n", item->id, (char*)item->data);
             break;
         case 0x4E:  /* frame center height above ellipsoid */
             item->value = libklv_readUINT16(klv_ctx);
